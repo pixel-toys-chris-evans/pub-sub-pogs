@@ -8,19 +8,16 @@ export function PogGenerator() {
   const [pogs, setPogs] = useState<PogType[]>([]);
 
   const generatePog = async () => {
-    const req = await fetch(
-      `https://api.unsplash.com/photos/random?client_id=${process.env.NEXT_PUBLIC_UNSPLASH_API_KEY}`,
-      {
-        cache: "no-store",
-      },
-    );
+    const req = await fetch(`https://picsum.photos/256`, {
+      cache: "no-store",
+    });
+
     if (req.ok) {
-      const data = await req.json();
       setPogs((prev) => {
         const arr = [...prev];
 
         arr.push({
-          image: data.urls.small ?? "",
+          image: `https://picsum.photos/id/${req.headers.get("picsum-id") as string}/256`,
         });
         return arr;
       });
