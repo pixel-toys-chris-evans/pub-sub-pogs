@@ -14,6 +14,7 @@ export function Pog({ image }: PogProps) {
   const subscription = useSubscription(register, () => ({ image }));
 
   const onClick = () => {
+    setMessage("");
     subscription?.broadcast("pog.taunt");
     subscription?.notify("pog.flip");
   };
@@ -29,7 +30,7 @@ export function Pog({ image }: PogProps) {
   return (
     <figure onClick={onClick}>
       <img
-        className="block rounded-full w-32 aspect-square object-cover"
+        className="block rounded-full w-32 aspect-square object-cover bg-slate-100"
         src={image}
         alt="Poggers"
       />

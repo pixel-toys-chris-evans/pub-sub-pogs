@@ -17,7 +17,7 @@ export function PogGenerator() {
         const arr = [...prev];
 
         arr.push({
-          image: `https://picsum.photos/id/${req.headers.get("picsum-id") as string}/256`,
+          image: `https://picsum.photos/id/${req.headers.get("picsum-id") as string}/256.webp`,
         });
         return arr;
       });
