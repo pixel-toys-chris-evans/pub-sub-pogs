@@ -4,24 +4,23 @@ import { useState } from "react";
 import { type Pog as PogType } from "./pog.type";
 import { Pog } from "./pog.component";
 
+function randomIntFromInterval(min: number, max: number) {
+  // min and max included
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
 export function PogGenerator() {
   const [pogs, setPogs] = useState<PogType[]>([]);
 
   const generatePog = async () => {
-    const req = await fetch(`https://picsum.photos/256`, {
-      cache: "no-store",
-    });
+    setPogs((prev) => {
+      const arr = [...prev];
 
-    if (req.ok) {
-      setPogs((prev) => {
-        const arr = [...prev];
-
-        arr.push({
-          image: `https://picsum.photos/id/${req.headers.get("picsum-id") as string}/256.webp`,
-        });
-        return arr;
+      arr.push({
+        image: `https://picsum.photos/id/${randomIntFromInterval(1, 1000)}/256.webp`,
       });
-    }
+      return arr;
+    });
   };
 
   return (
