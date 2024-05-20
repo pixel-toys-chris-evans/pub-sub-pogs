@@ -9,12 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "eventemitter3": "^5.0.1",
     "nanoid": "^5.0.7",
     "next": "14.2.3",
     "react": "^18",
     "react-dom": "^18"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

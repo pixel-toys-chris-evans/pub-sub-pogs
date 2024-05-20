@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { type Pog as PogType } from "./pog.type";
 import { Pog } from "./pog.component";
+import { useBroadcast } from "./use-subscription.hook";
 
 function randomIntFromInterval(min: number, max: number) {
   // min and max included
@@ -12,6 +13,8 @@ function randomIntFromInterval(min: number, max: number) {
 export function PogGenerator() {
   const [pogs, setPogs] = useState<PogType[]>([]);
 
+  const broadcast = useBroadcast();
+
   const generatePog = async () => {
     setPogs((prev) => {
       const arr = [...prev];
@@ -19,8 +22,11 @@ export function PogGenerator() {
       arr.push({
         image: `https://picsum.photos/id/${randomIntFromInterval(1, 1000)}/256.webp`,
       });
+
       return arr;
     });
+
+    broadcast("pog.generated");
   };
 
   return (

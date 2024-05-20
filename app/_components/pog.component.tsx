@@ -1,31 +1,33 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { usePogStatistics } from "./pog-statistics.store";
+import { useRef, useState } from "react";
 import { type Pog } from "./pog.type";
-import { useSubscription } from "./use-pub-sub.hook";
+import { useBroadcast, useSubscription } from "./use-subscription.hook";
+import { faker } from "@faker-js/faker";
 
 export type PogProps = Pog & {};
 
 export function Pog({ image }: PogProps) {
-  const { register } = usePogStatistics();
   const [message, setMessage] = useState("");
 
-  const subscription = useSubscription(register, () => ({ image }));
+  const name = useRef(faker.person.firstName()).current;
+
+  const broadcast = useBroadcast();
+
+  useSubscription({
+    "pog.taunt": (data) => {
+      if (data.name !== name) {
+        setMessage(`I've been taunted by Pog: "${data.name}"!`);
+      }
+    },
+  });
 
   const onClick = () => {
     setMessage("");
-    subscription?.broadcast("pog.taunt");
-    subscription?.notify("pog.flip");
-  };
 
-  useEffect(() => {
-    if (subscription) {
-      subscription.listen("pog.taunt", ({ event, data, context }) => {
-        setMessage(`I've been taunted by Pog: "${context.id}"!`);
-      });
-    }
-  }, [subscription]);
+    broadcast("pog.taunt", { name });
+    broadcast("pog.flip", { name });
+  };
 
   return (
     <figure onClick={onClick}>
@@ -34,7 +36,11 @@ export function Pog({ image }: PogProps) {
         src={image}
         alt="Poggers"
       />
-      <figcaption>{message}</figcaption>
+      <figcaption>
+        {message}
+        <br />
+        {name}
+      </figcaption>
     </figure>
   );
 }

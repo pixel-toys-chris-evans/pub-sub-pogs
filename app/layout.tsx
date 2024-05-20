@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { PogStatisticsProvider } from "./_components/pog-statistics.provider";
+import { PogStatistics } from "./_components/pog-statistics.component";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <PogStatisticsProvider>{children}</PogStatisticsProvider>
+        <PogStatistics>{children}</PogStatistics>
       </body>
     </html>
   );
