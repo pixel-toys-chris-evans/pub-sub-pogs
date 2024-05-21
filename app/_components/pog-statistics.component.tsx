@@ -17,13 +17,12 @@ export function PogStatistics({ children }: PogStatisticsProps) {
   // N.B: Call the usePubSub hook, defining an onMessage callback that will respond to `notify` events dispatched by subscribers.
   const [pogs, setPogs] = useState(0);
 
-  useSubscription({
-    "pog.generated": (data) => {
-      setPogs((prevValue) => prevValue + 1);
-    },
-    "pog.flip": (data) => {
-      alert(`You flipped Pog: ${data.name}`);
-    },
+  useSubscription("pog.generated", (data) => {
+    setPogs((prevValue) => prevValue + 1);
+  });
+
+  useSubscription("pog.flip", (data) => {
+    alert(`You flipped Pog: ${data.name}`);
   });
 
   return (

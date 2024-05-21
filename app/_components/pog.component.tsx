@@ -13,12 +13,10 @@ export function Pog({ image }: PogProps) {
   const name = useRef(faker.person.firstName()).current;
 
   const broadcast = useBroadcast();
-  useSubscription({
-    "pog.taunt": (data) => {
-      if (data.name !== name) {
-        setMessage(`I've been taunted by Pog: "${data.name}"!`);
-      }
-    },
+  useSubscription("pog.taunt", (data) => {
+    if (data.name !== name) {
+      setMessage(`I've been taunted by Pog: "${data.name}"!`);
+    }
   });
 
   const onClick = () => {

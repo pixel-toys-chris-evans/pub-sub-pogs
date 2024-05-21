@@ -5,24 +5,22 @@ import { useEffect } from "react";
 
 const emitter = new EventEmitter();
 
-export function useSubscription(
-  listeners: Record<string, (data?: any) => void>,
-) {
+export function useSubscription(event: string, callback: (data?: any) => void) {
   const unsubscribe = () => {
-    Object.entries(listeners).forEach(([event, callback]) => {
-      emitter.off(event, callback);
-    });
+    emitter.off(event, callback);
   };
 
-  useEffect(() => {
-    Object.entries(listeners).forEach(([event, callback]) => {
+  useEffect(
+    () => {
       emitter.on(event, callback);
-    });
 
-    return () => {
-      unsubscribe();
-    };
-  }, []);
+      return () => {
+        unsubscribe();
+      };
+    },
+    //eslint-disable-next-line -- We only want to run this effect on Component Mount.
+    [],
+  );
 
   return unsubscribe;
 }
